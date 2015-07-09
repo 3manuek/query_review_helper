@@ -3,7 +3,8 @@
 -- This query is executed in the catalog, the information here will entirely depend
 -- on your statitics (specially depending on the innodb_sample_page_stats)
 -- ANALYZE TABLE <your table>
-
+-- | STA_IX_NM                             | Card   | Cols                                  
+-- | rows_per_key    | index_total_pages | ix_leaf_pgs | %overEstTotal |
 
 SELECT STA.STA_IX_NM, CARDINALITY AS "Card", CONCAT(COLUMNS, " Idbflds(",fields ,")") AS "Cols" , rows_per_key    ,index_total_pages ,index_leaf_pages as "ix_leaf_pgs",  round(STA.CARDINALITY*100/ITS.rows) as "%overEstTotal" 
 FROM 
@@ -29,9 +30,11 @@ SET @ordcount = (SELECT count(*) as count from <your table>);
 --
 -- WARNING: This query could take some considerable time
 --
+-- | part    | <column to analyze distribution>          | Percentage from Total |
 
 SELECT q.* , round(q.part*100/@ordcount) as "Percentage from Total" 
-  FROM ( select count(*) as part, <column to analyze distribution> from <your table> group by order_status ) q 
+  FROM ( select count(*) as part, <column to analyze distribution> 
+         from <your table> group by <column to analyze distribution> ) q 
    ORDER BY 3 DESC;
 
 
