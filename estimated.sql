@@ -53,4 +53,9 @@ select table_name , rows  , clust_size , other_size ,modified ,
 from INNODB_TABLE_STATS WHERE table_name = '<your table>';
 
 
-
+SELECT  TABLE_SCHEMA, SUM(DATA_LENGTH)/(1024*1024*1024) 'Data Size', 
+        SUM(INDEX_LENGTH)/(1024*1024*1024) 'Index Size' ,
+        count(*) as 'Tables'
+FROM information_schema.TABLES 
+where ENGINE='InnoDB' AND TABLE_SCHEMA NOT IN('mysql','information_schema')
+group by TABLE_SCHEMA;
