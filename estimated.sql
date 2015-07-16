@@ -59,3 +59,11 @@ SELECT  TABLE_SCHEMA, SUM(DATA_LENGTH)/(1024*1024*1024) 'Data Size',
 FROM information_schema.TABLES 
 where ENGINE='InnoDB' AND TABLE_SCHEMA NOT IN('mysql','information_schema')
 group by TABLE_SCHEMA;
+
+-- 
+-- Gather Handler information
+--
+
+FLUSH STATUS;
+-- query goes here
+SHOW SESSION STATUS LIKE 'Handler%';
